@@ -1,0 +1,9 @@
+{% load crispy_forms_tags %}
+<h1>register here</h1>
+<form action="accounts/register" method="POST">
+
+    {{form|crispy}}
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary btn-sm" value="Sign Up">
+    </div>
+</form>
