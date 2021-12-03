@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import  authenticate,login,logout
+from bongaapp.models import EmailRecipients
 from .forms import  RegisterUserForm
+from .email import send_welcome_email
 
 # Create your views here.
 def home(request):
@@ -14,13 +18,19 @@ def register_user(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+            password = form.cleaned_data['password1']
+            email = form.cleaned_data['email']
+            # Send email upon registration
+            # recipient = EmailRecipients(name = username,email =email)
+            # recipient.save()
+            send_welcome_email(username,email)
             
-           # recipient = NewsLetterRecipients(name = name,email =email)
-            
-            #recipient.save()
-            
-            #send_welcome_email(name,email)
+            #authenticate and login user
+            user = authenticate(username = username,password=password)
+            login(request)
+            messages.success(request,('Registration successfull and logged in'))
+            return redirect('home')
+           
             #HttpResponseRedirect('news_today')
     else:
         form = RegisterUserForm()

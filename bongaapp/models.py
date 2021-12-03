@@ -4,3 +4,7 @@ from django.db import models
 # class User(models.Model):
 #     name = models.CharField(max_length=50)
 #     username = models.CharField(max_length=50,unique=True)
+
+class EmailRecipients(models.Model):
+    name = models.CharField(max_length = 30)
+    email = models.EmailField()
