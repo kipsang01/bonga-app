@@ -1,6 +1,7 @@
 {% load crispy_forms_tags %}
 <h1>register here</h1>
-<form action="accounts/register" method="POST">
+<form action="" method="POST">
+    {% csrf_token %}
 
     {{form|crispy}}
     <div class="form-group">

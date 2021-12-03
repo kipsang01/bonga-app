@@ -27,7 +27,7 @@ def register_user(request):
             
             #authenticate and login user
             user = authenticate(username = username,password=password)
-            login(request)
+            login(request,user)
             messages.success(request,('Registration successfull and logged in'))
             return redirect('home')
            
@@ -36,3 +36,15 @@ def register_user(request):
         form = RegisterUserForm()
         
     return render(request,'registration/registration_form.html', {'form':form})
+
+
+# def login_user(request):
+#     if request.method == 'POST':
+        
+    
+    
+    
+def logout_user(request):
+    logout(request)
+    title= ' Home is working'
+    return redirect('home')
