@@ -3,13 +3,22 @@ from django.contrib import messages
 from django.contrib.auth import  authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from bongaapp.models import Image
+from django.contrib.auth.models import User
 from .forms import  RegisterUserForm,ImageForm
 from .email import send_welcome_email
 
 # Create your views here.
 def home(request):
     title= ' Home is working'
-    return render(request, 'home.html', {'title':title})
+    images = Image.all_images()
+    
+    return render(request, 'home.html', {'title':title, 'images':images})
+
+
+def user_profile(request,username):
+    user = User.objects.filter(username=username).first()
+    
+    return render(request, 'profile.html', {'user': user})
 
 
  # Image posting page
@@ -31,12 +40,6 @@ def post_image(request):
     return render(request,'add_post.html', {'form':form})
     
     
-
-
-
-
-
-
 
 
 

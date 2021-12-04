@@ -2,4 +2,15 @@
 
 {% block content %}
     <h1>{{title}}</h1>
+    {% for image in images %}
+    <div class="card w-50">
+        <h5 class="card-header"><a href="/profile/{{image.author.username}}"> {{ image.author.username}}</a></h5>
+        <div class="card-body">
+            <img src="{{ image.image.url}}" class="card-img-top w-100" alt="{{ image.name}}">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">{{ image.caption }}</p>
+        </div>
+      </div>
+    {% endfor %}
+
 {% endblock %}

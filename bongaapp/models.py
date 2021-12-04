@@ -18,6 +18,11 @@ class Image(models.Model):
     
     def save_image(self):
         self.save()
+        
+    @classmethod    
+    def all_images(self):
+        images= Image.objects.all()
+        return images
     
     
 class Comment(models.Model):
@@ -38,3 +43,13 @@ class Like(models.Model):
     
     def __str__(self):
         return self.author
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User,null=True, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500,blank=True)
+    profile_pic = models.ImageField(upload_to = 'bonga/') 
+    
+    def __str__(self):
+        return str(self.user)
+    
