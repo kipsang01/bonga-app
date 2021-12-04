@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import  authenticate,login,logout
-from bongaapp.models import EmailRecipients
+from bongaapp.models import Image
 from .forms import  RegisterUserForm
 from .email import send_welcome_email
 

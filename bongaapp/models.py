@@ -1,10 +1,39 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
 
-# # Create your models here.
-# class User(models.Model):
-#     name = models.CharField(max_length=50)
-#     username = models.CharField(max_length=50,unique=True)
+    
+    
+class Image(models.Model):
+    image = models.ImageField()
+    name = models.CharField(max_length=50)
+    caption = models.CharField(max_length=500, blank=True)
+    location = models.CharField(max_length=50,blank=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_posted = models.DateField(default=timezone.now)
 
-class EmailRecipients(models.Model):
-    name = models.CharField(max_length = 30)
-    email = models.EmailField()
+    
+    def __str__(self):
+        return self.name
+    
+    
+    
+    
+class Comment(models.Model):
+    image = models.ForeignKey(Image,on_delete=models.CASCADE)
+    content = models.TextField(max_length=500)
+    author = models.ForeignKey(User,on_delete=models.CASCADE)
+    
+    
+    def __str__(self):
+        return self.content
+    
+    
+
+class Like(models.Model):
+    author= models.ForeignKey(User,on_delete=models.CASCADE)
+    image = models.ForeignKey(Image,on_delete=models.CASCADE)
+    
+    
+    def __str__(self):
+        return self.author
