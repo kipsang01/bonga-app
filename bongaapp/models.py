@@ -5,7 +5,7 @@ from django.utils import timezone
     
     
 class Image(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(upload_to = 'bonga/')
     name = models.CharField(max_length=50)
     caption = models.CharField(max_length=500, blank=True)
     location = models.CharField(max_length=50,blank=True)
@@ -16,7 +16,8 @@ class Image(models.Model):
     def __str__(self):
         return self.name
     
-    
+    def save_image(self):
+        self.save()
     
     
 class Comment(models.Model):

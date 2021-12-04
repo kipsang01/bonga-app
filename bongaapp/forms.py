@@ -20,4 +20,4 @@ class ImageForm(ModelForm):
     
     class Meta:
         model = Image
-        fields = ('image','name','caption','location' )
+        fields = ['image','name','caption','location' ]

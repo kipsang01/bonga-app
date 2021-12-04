@@ -1,14 +1,45 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import  authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 from bongaapp.models import Image
-from .forms import  RegisterUserForm
+from .forms import  RegisterUserForm,ImageForm
 from .email import send_welcome_email
 
 # Create your views here.
 def home(request):
     title= ' Home is working'
     return render(request, 'home.html', {'title':title})
+
+
+ # Image posting page
+@login_required(login_url='/accounts/login')
+def post_image(request):
+    if request.method == 'POST':
+        current_user = request.user
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.save(commit=False)
+            image.author = current_user
+            image.save()
+            messages.success(request,('Image Posted!'))
+        return redirect('home')
+           
+    else:
+        form = ImageForm()
+        
+    return render(request,'add_post.html', {'form':form})
+    
+    
+
+
+
+
+
+
+
+
+
 
 
 # Register user
@@ -20,9 +51,6 @@ def register_user(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             email = form.cleaned_data['email']
-            # Send email upon registration
-            # recipient = EmailRecipients(name = username,email =email)
-            # recipient.save()
             send_welcome_email(username,email)
             
             #authenticate and login user
@@ -31,19 +59,12 @@ def register_user(request):
             messages.success(request,('Registration successfull and logged in'))
             return redirect('home')
            
-            #HttpResponseRedirect('news_today')
     else:
         form = RegisterUserForm()
         
     return render(request,'registration/registration_form.html', {'form':form})
 
-
-# def login_user(request):
-#     if request.method == 'POST':
-        
-    
-    
-    
+    # Logout    
 def logout_user(request):
     logout(request)
     title= ' Home is working'
