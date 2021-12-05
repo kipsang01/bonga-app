@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.contrib.auth import  authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from bongaapp.models import Image, Profile
+from bongaapp.models import Image, Profile ,Comment
 from django.contrib.auth.models import User
 from .forms import  RegisterUserForm,ImageForm,ProfileForm,CommentForm
 from .email import send_welcome_email
@@ -71,7 +71,19 @@ def post_image(request):
 # one post page
 def post(request,image_id):
     image =  get_object_or_404(Image,id = image_id)
-    return render(request, 'post.html', {'image': image})
+    comments = Comment.objects.filter(image=image).all()
+    form = CommentForm()
+    current_user = request.user
+    
+    if request.method =='POST':
+        form = CommentForm(request.POST)
+        comment = form.save(commit=False)
+        comment.author = current_user
+        comment.image = image
+        comment.save()
+        return redirect('post')
+        
+    return render(request, 'post.html', {'image': image, 'form':form, 'comments':comments})
 
 
 

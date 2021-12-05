@@ -1,0 +1,14 @@
+.profile-pic{
+    height: 50vh;
+}
+.profile-pic img{
+    border-radius: 50%;
+    height:75%;
+    width:50%;
+    margin:auto;
+}
+.card-header a{
+    text-decoration: none;
+    font-size: bold;
+    color:black;
+}
