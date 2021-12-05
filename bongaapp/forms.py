@@ -28,3 +28,11 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['bio','profile_pic' ]
+        
+        
+class CommentForm(ModelForm):
+    
+    
+    class Meta:
+        model = Comment
+        fields = ['content']

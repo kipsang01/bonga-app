@@ -26,7 +26,7 @@ class Image(models.Model):
     
     
 class Comment(models.Model):
-    image = models.ForeignKey(Image,on_delete=models.CASCADE)
+    image = models.ForeignKey(Image,related_name='comments',on_delete=models.CASCADE)
     content = models.TextField(max_length=500)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     
@@ -46,7 +46,7 @@ class Like(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User,null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500,blank=True)
     profile_pic = models.ImageField(upload_to = 'bonga/') 
     

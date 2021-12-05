@@ -1,37 +1,45 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.contrib.auth import  authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from bongaapp.models import Image
+from bongaapp.models import Image, Profile
 from django.contrib.auth.models import User
-from .forms import  RegisterUserForm,ImageForm,ProfileForm
+from .forms import  RegisterUserForm,ImageForm,ProfileForm,CommentForm
 from .email import send_welcome_email
 
 # Create your views here.
 def home(request):
-    title= ' Home is working'
+    title= ' Home'
+    form = CommentForm()
     images = Image.all_images()
+    current_user = request.user
     
-    return render(request, 'home.html', {'title':title, 'images':images})
+    if request.method =='POST':
+        if 'postComment' in request.POST:
+            form = CommentForm(request.POST)
+            comment = form.save(commit=False)
+            comment.author = current_user
+            comment.save()
+            
+    
+    return render(request, 'home.html', {'title':title, 'images':images, 'form':form})
 
 # Page for profile
 def user_profile(request,username):
     user = User.objects.filter(username=username).first()
-    
-    return render(request, 'profile.html', {'user': user})
+    profile = get_object_or_404(Profile,id = user.id)
+    posts = Image.objects.filter(author=user)
+    return render(request, 'profile.html', {'user': user,'profile':profile,'posts':posts})
 
 # Edit profile
 @login_required(login_url='/accounts/login')
 def edit_profile(request,username):
     user = User.objects.filter(username=username).first()
     if request.method == 'POST':
-        current_user = request.user
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            profile = form.save(commit=False)
-            profile.author = current_user
-            profile.save()
-            messages.success(request,('Image Posted!'))
+            form.save()
+            messages.success(request,('Update saved'))
         return redirect('user_profile')
            
     else:
@@ -59,7 +67,11 @@ def post_image(request):
         
     return render(request,'add_post.html', {'form':form})
     
-    
+
+# one post page
+def post(request,image_id):
+    image =  get_object_or_404(Image,id = image_id)
+    return render(request, 'post.html', {'image': image})
 
 
 

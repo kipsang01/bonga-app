@@ -5,4 +5,10 @@
 
 {{user.username}}
 <button><a href="{{user.username }}/edit"> edit</a></button>
+{{profile.bio}}
+<img src="{{profile.profile_pic.url}}" alt="">
+
+{% for post in posts%}
+<img src="{{ post.image.url}}" alt="">
+{% endfor %}
 {% endblock %}

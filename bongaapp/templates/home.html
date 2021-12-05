@@ -1,14 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load crispy_forms_tags %}
     <h1>{{title}}</h1>
     {% for image in images %}
     <div class="card w-50">
-        <h5 class="card-header"><a href="/profile/{{image.author.username}}"> {{ image.author.username}}</a></h5>
+        <h5 class="card-header"><a href="/profile/{{image.author.username}}"> {{image.author.profile_pic}} {{ image.author.username}}</a></h5>
         <div class="card-body">
             <img src="{{ image.image.url}}" class="card-img-top w-100" alt="{{ image.name}}">
           <h5 class="card-title">Special title treatment</h5>
           <p class="card-text">{{ image.caption }}</p>
+        </div>
+        <a href="/post/{{image.id}}">comment</a>
+        <div class="card-footer">
+            <form action="" method="POST">
+                {% csrf_token %}
+            {{form.content}}
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-sm" value="Post" name = 'postComment'>
+            </div>
         </div>
       </div>
     {% endfor %}
