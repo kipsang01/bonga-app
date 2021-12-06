@@ -3,14 +3,26 @@
 {% block content %}
 {% load crispy_forms_tags %}
     {% for image in images %}
-    <div class="card w-50">
-        <h5 class="card-header"><a href="/profile/{{image.author.username}}"> {{image.author.profile_pic}} {{ image.author.username}}</a> <br><span class='text-muted fs-6'>{{ image.location}}</span></h5>
+    <div class="card w-50 image-display">
+        <h5 class="card-header"><a href="/profile/{{image.author.username}}"> 
+            {% if image.author.profile.profile_pic %}
+            <img src="{{image.author.profile.profile_pic.url}}" alt="" class="icon"> {% endif %} {{ image.author.username}}</a> <span class='text-muted fs-6'>{{ image.location}}</span></h5>
         <div class="card-body">
-            <img src="{{ image.image.url}}" class="card-img-top w-100" alt="{{ image.name}}">
-          <h5 class="card-title">Special title treatment</h5>
+            <img src="{{ image.image.url}}" class="card-img-top image-fluid" alt="{{ image.name}}">
+          <h3 class="card-title"><i class="fas fa-heart m-2 text-danger"></i><i class="far fa-comment m-2"></i></h3>
+          <!-- {{image.comments.}}
+          
+          {% for comment in image.comments.all %} 
+      
+            {{ comment.date_posted }}<br>
+            <strong>{{ comment.author }}</strong>
+            <p>{{ comment.content }}</p>
+            {% empty %}
+            <p>There is no comments</p>
+            {% endfor %} -->
           <p class="card-text">{{ image.caption }}</p>
         </div>
-        <a href="/post/{{image.id}}">comment</a>
+        <a href="/post/{{image.id}}">view all  {{image.comments.all|length}} comments</a>
         <div class="card-footer">
             <form action="" method="POST">
                 {% csrf_token %}

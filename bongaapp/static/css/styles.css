@@ -12,3 +12,17 @@
     font-size: bold;
     color:black;
 }
+.icon{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+/* .profile-photo{
+    position:fixed;
+} */
+
+.card-body img{
+    height:300px;
+    width:400px;
+    margin:auto;
+}

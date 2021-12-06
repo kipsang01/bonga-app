@@ -27,20 +27,34 @@ def home(request):
 # Page for profile
 def user_profile(request,username):
     user = User.objects.filter(username=username).first()
+    if user == request.user:
+        return redirect('my_profile',username = user.username)
     profile = get_object_or_404(Profile,id = user.id)
     posts = Image.objects.filter(author=user)
-    return render(request, 'profile.html', {'user': user,'profile':profile,'posts':posts})
+    return render(request, 'userprofile.html', {'user': user,'profile':profile,'posts':posts})
+
+#logged in user profile
+@login_required(login_url='/accounts/login')
+def my_profile(request,username):
+    user = request.user
+    user = User.objects.filter(username=user.username).first()
+    posts = Image.objects.filter(author=user)
+    return render(request, 'profile.html', {'user': user,'posts':posts})
 
 # Edit profile
 @login_required(login_url='/accounts/login')
 def edit_profile(request,username):
-    user = User.objects.filter(username=username).first()
+    user = request.user
+    user = User.objects.filter(username=user.username).first()
+    profile = get_object_or_404(Profile,user=user)
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            form.save()
+            profileform = form.save(commit=False)
+            profileform.user = user
+            profileform.save()
             messages.success(request,('Update saved'))
-        return redirect('user_profile')
+        return redirect('my_profile',username =user.username)
            
     else:
         form = ProfileForm()
@@ -81,7 +95,7 @@ def post(request,image_id):
         comment.author = current_user
         comment.image = image
         comment.save()
-        return redirect('post')
+        return redirect('post',image_id=image.id)
         
     return render(request, 'post.html', {'image': image, 'form':form, 'comments':comments})
 
@@ -95,6 +109,7 @@ def register_user(request):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
+
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             email = form.cleaned_data['email']
