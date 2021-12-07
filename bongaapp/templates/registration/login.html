@@ -2,14 +2,17 @@
 {% block content %}
 
 {% load crispy_forms_tags %}
-<h1>login here</h1>
+<div class="form w-50 m-auto shadow p-3 mb-5 bg-body rounded">
+    <h1>Login </h1>
 <form action="" method="POST">
 {% csrf_token%}
 
 {{form|crispy}}
-<div class="form-group">
-    <input type="submit" class="btn btn-primary btn-sm" value="Sign Up">
+<div class="form-group m-3">
+    <input type="submit" class="btn btn-primary btn-sm" value="Sign In">
 </div>
 </form>
+</div>
+
 
 {% endblock %}

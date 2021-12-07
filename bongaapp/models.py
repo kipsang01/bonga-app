@@ -36,7 +36,7 @@ class Image(models.Model):
     
     @classmethod    
     def search_user(self, username):
-        user= get_object_or_404(User,username=username)
+        user= User.objects.filter(username=username).first()
         return user
     
     

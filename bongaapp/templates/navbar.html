@@ -1,9 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid d-flex justify-content-center">
       <a class="navbar-brand" href="#">BongaApp</a>
-      <form class="">
+      <form class="" role="search"  action="{% url 'search_user'%}" >
+        {% csrf_token %}
           <div class="input-group ">
-                <input type="text" class="form-control" placeholder="Search" aria-label="search" aria-describedby="basic-addon1">
+                <input type="search" class="form-control" name='search' placeholder="Search user" aria-label="search" aria-describedby="basic-addon1">
                 <div class="input-group-append">
                     <button class="input-group-text" type="submit" ><i class="fas fa-search"></i></button>
                 </div>
@@ -15,7 +16,7 @@
         <a class="nav-link active" aria-current="page" href="{% url 'home' %}"><i class="fas fa-home">Home</i></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/post-image"><i class="fas fa-images"></i></a>
+        <a class="nav-link" href="/post-image"><i class="fas fa-images"> New</i></a>
       </li>
       </ul>
       
@@ -44,7 +45,7 @@
           </li>
           {% else %}
             <li class="nav-item">
-                <a class="nav-link " href="accounts/register" tabindex="-1" aria-disabled="true">Register</a>
+                <a class="nav-link " href="/accounts/register" tabindex="-1" aria-disabled="true">Register</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link " href="/accounts/login" tabindex="-1" aria-disabled="true">Login</a>

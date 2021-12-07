@@ -83,6 +83,7 @@ def post_image(request):
     return render(request,'add_post.html', {'form':form})
     
 # Liking post
+@login_required(login_url='/accounts/login')
 def like_image(request, image_id):
     image = get_object_or_404(Image,id = image_id)
     like = Like.objects.filter(image = image ,author = request.user).first()
@@ -119,7 +120,19 @@ def post(request,image_id):
         form = CommentForm()
     return render(request, 'post.html', {'image': image, 'form':form, 'comments':comments})
 
+# search users by usernames
+def search_user(request):
+    if 'search' in request.GET and request.GET["search"]:
+        search_term = request.GET.get("search")
+        print(search_term)
+        found_user = Image.search_user(search_term)
+        message = f"{search_term}"
 
+        return render(request, 'search.html',{'founduser':found_user})
+
+    else:
+        message = "You haven't searched for any term"
+        return render(request, 'search.html',{"message":message})
 
 
 

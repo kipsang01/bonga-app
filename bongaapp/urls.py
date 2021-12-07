@@ -15,6 +15,7 @@ urlpatterns = [
     path('post/<int:image_id>/comment', views.post, name='post'),
     path('post/<int:image_id>/like', views.like_image, name='like_image'),
     path('post/<int:image_id>', views.post, name='post'),
+    path('search/', views.search_user, name='search_user'),
     path('accounts/register/', views.register_user, name='registration'),
     path('logout/', views.logout_user, name='logout'),
     path('accounts/', include('django.contrib.auth.urls')),

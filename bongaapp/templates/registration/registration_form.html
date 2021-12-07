@@ -3,14 +3,17 @@
 
 
 {% load crispy_forms_tags %}
-<h1>register here</h1>
+<div class="form w-50 m-auto shadow p-3 mb-5 bg-body rounded">
+    <h1>Create Account</h1>
 <form action="" method="POST">
-    {% csrf_token %}
+        {% csrf_token %}
 
-    {{form|crispy}}
-    <div class="form-group">
-        <input type="submit" class="btn btn-primary btn-sm" value="Sign Up">
-    </div>
-</form>
+        {{form|crispy}}
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary btn-sm" value="Sign Up">
+        </div>
+    </form>
+</div>
+
 
 {% endblock %}

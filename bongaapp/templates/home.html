@@ -38,13 +38,17 @@
         </div>
         
         <div class="card-footer">
+          {% if user.is_authenticated  %}
             <form action="{% url 'post' image.id%}" method="POST">
                 {% csrf_token %}
             {{form.content}}
             
-               <a href="http://"><input type="submit" class="btn btn-primary btn-sm" value="Post" name = 'postComment'></a>
+               <a href="http://"><input type="submit" class="btn btn-primary btn-sm" value="Post" name = 'postComment disabled'></a>
           
             </form>
+            {% else%}
+            <a href="/accounts/login"><p class="text-muted">Login to comment</p></a>
+            {% endif%}
         </div>
       </div>
     {% endfor %}
