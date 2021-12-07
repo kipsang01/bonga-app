@@ -1,0 +1,1 @@
+web: gunicorn bonga.wsgi --log-file -
