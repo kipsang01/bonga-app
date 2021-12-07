@@ -34,15 +34,49 @@ class ImageTestClass(TestCase):
         self.assertTrue(len(comments) > 0)
         self.assertTrue(len(likes) > 0)
      
-    #   # Testing Delete Method   
-    # def test_delete(self):
-    #     self.location1.save_location()
-    #     self.category1.save_category()
-    #     self.image1.save_image()
-    #     Image.objects.get(id =self.image1.id).delete()
-    #     images = Image.objects.all()
-    #     self.assertTrue(len(images) == 0)
-       
+      # Testing Delete Method   
+    def test_delete(self):
+        self.user1.save()
+        self.image1.save_image()
+        self.comment1.save_comment()
+        self.like1.save_like()
+        Like.objects.get(id =self.like1.id).delete()
+        Comment.objects.get(id =self.comment1.id).delete()
+        Image.objects.get(id =self.image1.id).delete()
+        User.objects.get(id =self.user1.id).delete()
+        images = Image.objects.all()
+        comments = Comment.objects.all()
+        likes = Like.objects.all()
+        users = User.objects.all()
+        self.assertTrue(len(images) == 0)
+        self.assertTrue(len(comments) == 0)
+        self.assertTrue(len(likes) == 0)
+        self.assertTrue(len(users) == 0)
+    
+    
+      # Testing update method   
+    def test_update(self):
+        self.user1.save()
+        self.image1.save_image()
+        self.image1.update_caption('Good')
+        updated_caption =self.image1.caption
+        self.assertEqual(updated_caption, 'Good')
+        
+        
+      # Test get all images 
+    def test_get_all_images(self):
+        self.image2 = Image(image='mountain.jpg',name='mountain peak',caption='Glaciers in the peak',author=self.user1,location='mt.kenya')
+         
+        self.user1.save()
+        self.image1.save_image()
+        self.image2.save_image()
+        images = Image.all_images()
+        self.assertTrue(len(images) == 2)
+        
+        
+        
+        
+        
     #    # Testing Get Image by Id 
     # def test_get_image_by_id(self):
     #     self.location1.save_location()

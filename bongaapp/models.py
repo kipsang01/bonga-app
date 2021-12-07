@@ -52,6 +52,8 @@ class Comment(models.Model):
     def save_comment(self):
         self.save()
     
+    def delete_comment(self):
+        self.delete()
     
 
 class Like(models.Model):
@@ -67,6 +69,9 @@ class Like(models.Model):
         ]
     def save_like(self):
         self.save()
+        
+    def delete_like(self):
+        self.delete()
     
 
 class Profile(models.Model):
