@@ -27,7 +27,7 @@
             <p>There is no comments</p>
             {% endfor %} -->
           <p class="card-text"> <b>{{ image.author.username }}</b>{{ image.caption }}</p>
-          <p>{{ image.likes|length}} likes</p>
+          <p>{{ image.likes.count}} likes</p>
           <span class="text-muted"> <a href="/post/{{image.id}}">
             {%if image.comments.all|length > 0%}
             view all  {{image.comments.all|length}} comments

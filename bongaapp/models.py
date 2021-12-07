@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -21,10 +22,22 @@ class Image(models.Model):
     def save_image(self):
         self.save()
         
+    def delete_image(self):
+        self.delete()
+        
+    def update_caption(self,newcaption):
+        self.caption = newcaption
+        self.save()
+        
     @classmethod    
     def all_images(self):
         images= Image.objects.all()
         return images
+    
+    @classmethod    
+    def search_user(self, username):
+        user= get_object_or_404(User,username=username)
+        return user
     
     
 class Comment(models.Model):
@@ -36,7 +49,8 @@ class Comment(models.Model):
     def __str__(self):
         return self.content
     
-    
+    def save_comment(self):
+        self.save()
     
     
 
@@ -51,7 +65,9 @@ class Like(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['author', 'image'], name="unique_like"),
         ]
-
+    def save_like(self):
+        self.save()
+    
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
