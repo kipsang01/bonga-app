@@ -38,14 +38,19 @@ class Comment(models.Model):
     
     
     
+    
 
 class Like(models.Model):
     author= models.ForeignKey(User,on_delete=models.CASCADE)
-    image = models.ForeignKey(Image,on_delete=models.CASCADE)
+    image = models.ForeignKey(Image,related_name='likes',on_delete=models.CASCADE)
     
     
     def __str__(self):
-        return self.author
+          return '{} by {}'.format(self.image, self.author)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['author', 'image'], name="unique_like"),
+        ]
 
 
 class Profile(models.Model):

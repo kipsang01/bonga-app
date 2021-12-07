@@ -14,7 +14,11 @@
     <div class="col-6">
         <h2>{{user.username}}</h2>
         <i class="fas fa-cog"><a href="/myprofile/{{user.username}}/edit"> edit</a></i>
+        {% if user.profile.bio %}
         <p>{{user.profile.bio}}</p>
+        {% else %}
+        <p>No bio</p>
+        {% endif %}
     </div>
 </div>
 <hr>

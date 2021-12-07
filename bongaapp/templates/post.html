@@ -12,18 +12,21 @@
         </div>
         <div class="col-md-6">
             <div class="">
-                <h5 class="card-header"><a href="/profile/{{image.author.username}}"> <img src="{{image.author.profile.profile_pic.url}} " alt="" class="icon"> {{ image.author.username}}</a>
+                <h5 class="card-header"><a href="/profile/{{image.author.username}}">{%if image.author.profile.profile_pic %} <img src="{{image.author.profile.profile_pic.url}} " alt="" class="icon"> {% endif %}{{ image.author.username}}</a>
                 <p>{{ image.caption}}</p></h5>
                 {% if comments%}
                 {% for comment in comments %}
-                    <h6> <img src="{{comment.author.profile.profile_pic.url}}" alt="" class="icon"> <b>{{comment.author}}</b> {{comment.content}}</h6>
+                    <h6> {%if image.author.profile.profile_pic %}<img src="{{comment.author.profile.profile_pic.url}}" alt="" class="icon">{% endif %} <b>{{comment.author}}</b> {{comment.content}}</h6>
                 {% endfor %}
                 {% else%}
                 <p>No comments yet</p>
                 {% endif %}
                 <form action="" method="POST">
                     {% csrf_token %}
-                {{form.content}}
+                    <div class="form-group" style="height: 100px">
+                        {{form.content}}
+                    </div>
+                
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary btn-sm" value="Post">
                 </div>

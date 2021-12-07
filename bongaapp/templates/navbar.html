@@ -29,7 +29,11 @@
           
           <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-user">Profile</i>  
+                  {% if user.profile.profile_pic%}
+                  <img src="{{user.profile.profile_pic.url}}" alt="" class="icon-profile"> <i>{{user.username}}</i> 
+                  {% else%} 
+                  <i class="fas fa-user">{{user.username}}</i>  
+                  {% endif%}
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="/myprofile/{{user.username}}">Profile</a></li>

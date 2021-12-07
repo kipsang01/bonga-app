@@ -1,8 +1,9 @@
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.contrib.auth import  authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from bongaapp.models import Image, Profile ,Comment
+from bongaapp.models import Image, Profile ,Comment, Like
 from django.contrib.auth.models import User
 from .forms import  RegisterUserForm,ImageForm,ProfileForm,CommentForm
 from .email import send_welcome_email
@@ -74,29 +75,48 @@ def post_image(request):
             image.author = current_user
             image.save()
             messages.success(request,('Image Posted!'))
-        return redirect('home')
+        return HttpResponseRedirect(request.path_info)
            
     else:
         form = ImageForm()
         
     return render(request,'add_post.html', {'form':form})
     
+# Liking post
+def like_image(request, image_id):
+    image = get_object_or_404(Image,id = image_id)
+    like = Like.objects.filter(image = image ,author = request.user).first()
+    if like is None:
+        like = Like()
+        like.image = image
+        like.author = request.user
+        like.save()
+    else:
+        like.delete()
+    return redirect('home')
+
+
+
 
 # one post page
 def post(request,image_id):
     image =  get_object_or_404(Image,id = image_id)
     comments = Comment.objects.filter(image=image).all()
-    form = CommentForm()
     current_user = request.user
     
     if request.method =='POST':
         form = CommentForm(request.POST)
-        comment = form.save(commit=False)
-        comment.author = current_user
-        comment.image = image
-        comment.save()
-        return redirect('post',image_id=image.id)
         
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = current_user
+            
+            comment.image = image
+            comment.save()
+        return redirect('post',image_id=image.id)
+    else:
+        
+        form = CommentForm()
     return render(request, 'post.html', {'image': image, 'form':form, 'comments':comments})
 
 
