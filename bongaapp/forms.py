@@ -35,8 +35,6 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields =['content']
-        # model = Comment
-        # exclude = ()
         widgets = {
             'content':forms.Textarea(attrs={'rows':2,'placeholder':'write comment'}),
         }
